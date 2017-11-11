@@ -8,6 +8,7 @@ use DI\ContainerBuilder;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 use pantry\Household\HouseholdController;
+use pantry\Intake\IntakeController;
 use pantry\Member\MemberController;
 
 class App extends BridgeApp
@@ -26,6 +27,7 @@ class App extends BridgeApp
         {
             $container->get(HouseholdController::class)->register($this);
             $container->get(MemberController::class)->register($this);
+            $container->get(IntakeController::class)->register($this);
         });
 
         // TODO

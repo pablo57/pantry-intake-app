@@ -12,7 +12,6 @@ class MemberController
         $slim->get('/members[/{id}]', MemberGetAction::class);
         $slim->post('/members', MemberPostAction::class);
         $slim->patch('/members', MemberPatchAction::class);
-        // TODO: !!! -- dob as a query parameter?
         // $slim->get('/members/search/{search}', 'SearchClass');
     }
 }
