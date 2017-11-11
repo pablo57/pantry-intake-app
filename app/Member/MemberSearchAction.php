@@ -19,14 +19,13 @@ class MemberSearchAction
         $id = $searchParams['id'] ?? '';
 
         if (strlen($lastName) > 0) {
-            $results = Member::where('LastName', 'like', $lastName . '%');
+            $results = Member::where('LastName', 'like', $lastName . '%')->get();
         }
 
         if (strlen($id) > 0) {
-            $results = Member::Where('CAST(Id AS CHAR)', 'like', $id . '%');
+            $results = Member::where('CAST(Id AS CHAR)', 'like', $id . '%')->get();
         }
 
-        $results = Member::get();
         $status = ($results === null) ? 404 : 200;
         $data = [
             'status' => $status,
