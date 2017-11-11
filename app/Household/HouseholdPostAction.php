@@ -12,21 +12,31 @@ class HouseholdPostAction
 {
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
+        // Assume failure
+        $data =
+            [
+                'status' => 500,
+                'data' => null
+            ];
+
+        // Get the body as an associative array
         $body = $request->getParsedBody();
 
+        // Add new Household record
         $houseHold = new Household();
-        $houseHold->Name = $body['name'];
-        $houseHold->save();
 
-        $houseHoldData = $houseHold->getAttributes();
-        $houseHoldData = array_change_key_case($houseHoldData, CASE_LOWER);
+        // Replace each key value from the JSON body into the Household model and save.
+        foreach ($body as $key => $value) {
+            $houseHold->$key = $value;
+        }
 
-        $status = 200;
-        $data = [
-            'status' => $status,
-            'data' => $houseHoldData
-        ];
+        if ($houseHold->save()) {
+            $data = [
+                'status' => 200,
+                'data' => $houseHold->getAttributes()
+            ];
+        }
 
-        return $response->withJson($data)->withStatus($status);
+        return $response->withJson($data)->withStatus($data['status']);
     }
 }

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace pantry\Household;
+namespace pantry\Member;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Psr\Http\Message\ResponseInterface;
-use pantry\Models\Household;
+use pantry\Models\Member;
 
-class HouseholdPatchAction
+class MemberPatchAction
 {
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
@@ -27,21 +27,21 @@ class HouseholdPatchAction
         if ($id > 0) {
 
             // Look up the Household via the id (PK).
-            $household = Household::find($id);
+            $member = Member::find($id);
 
             // If household is NOT Null then we found an existing record.
-            if ($household !== null) {
+            if ($member !== null) {
                 foreach ($body as $key => $value) {
-                    $household->$key = $value;
+                    $member->$key = $value;
                 }
 
                 // The save() method will return true if we updated the record.
-                if ($household->save()) {
+                if ($member->save()) {
 
                     $status = 200;
                     $data = [
                         'status' => $status,
-                        'data' => $household
+                        'data' => $member
                     ];
                 } else {
                     $status = 400;

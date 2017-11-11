@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace pantry\Household;
+namespace pantry\Member;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Psr\Http\Message\ResponseInterface;
-use pantry\Models\Household;
+use pantry\Models\Member;
 
-class HouseholdGetAction
+class MemberGetAction
 {
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
@@ -16,17 +16,18 @@ class HouseholdGetAction
         $id = $route->getArgument('id') ?? 0;
 
         if ($id > 0) {
-            $houseHold = Household::find($id);
+            $member = Member::find($id);
         } else {
-            $houseHold = Household::all();
+            $member = Member::all();
         }
 
-        $status = ($houseHold === null) ? 404 : 200;
+        $status = ($member === null) ? 404 : 200;
         $data = [
             'status' => $status,
-            'data' => $houseHold
+            'data' => $member
         ];
 
         return $response->withJson($data)->withStatus($data['status']);
     }
 }
+

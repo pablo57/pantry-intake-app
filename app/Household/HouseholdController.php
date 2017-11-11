@@ -9,10 +9,8 @@ class HouseholdController
 {
     public function register(App $slim)
     {
-        $slim->get('/households/{id}', HouseholdGetAction::class);
+        $slim->get('/households[/{id}]', HouseholdGetAction::class);
         $slim->post('/households', HouseholdPostAction::class);
         $slim->patch('/households', HouseholdPatchAction::class);
-        // TODO: !!! -- dob as a query parameter?
-        // $slim->get('/households/search/{search}', 'SearchClass');
     }
 }
