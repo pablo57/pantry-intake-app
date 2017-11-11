@@ -15,6 +15,9 @@ class MemberGetAction
         $route = $request->getAttribute('route');
         $id = $route->getArgument('id') ?? 0;
 
+
+        // TODO: Query param household_id=?? // get all members filtered by the householdId
+
         if ($id > 0) {
             $member = Member::find($id);
         } else {
@@ -30,4 +33,3 @@ class MemberGetAction
         return $response->withJson($data)->withStatus($data['status']);
     }
 }
-
