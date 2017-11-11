@@ -7,6 +7,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Psr\Http\Message\ResponseInterface;
 use pantry\Models\Member;
+use pantry\Models\MemberSearch;
 
 class MemberSearchAction
 {
@@ -23,7 +24,7 @@ class MemberSearchAction
         }
 
         if (strlen($id) > 0) {
-            $results = Member::where('CAST(Id AS CHAR)', 'like', $id . '%')->get();
+            $results = MemberSearch::where('Id', 'like', $id . '%')->get();
         }
 
         $status = ($results === null) ? 404 : 200;
