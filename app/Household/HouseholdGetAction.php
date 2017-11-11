@@ -23,29 +23,34 @@ class HouseholdGetAction
         }
 
         if ($id > 0) {
-            $houseHold = Household::find($id);
+            $records = Household::find($id);
+            if ($includeMembers) {
+                $members = Member::where('HouseholdId', '=', $records->Id)->get();
+                if ($members->count() > 0) {
+                    $records['members'] = $members;
+                }
+            }
         } else {
             $houseHold = Household::all();
+            $records = [];
+            foreach ($houseHold as $record) {
+                $members = [];
+                if ($includeMembers) {
+                    $members = Member::where('HouseholdId', '=', $record->Id)->get();
+                }
+
+                if (count($members) > 0) {
+                    $record['members'] = $members;
+                }
+                $records[] = $record;
+            }
         }
 
-        $records = [];
-        foreach ($houseHold as $record) {
-            $members = [];
-            if ($includeMembers) {
-                $members = Member::where('HouseholdId', '=', $record->Id)->get();
-            }
-
-            if (count($members) > 0) {
-                $record['members'] = $members;
-            }
-            $records[] = $record;
-        }
-
-        $status = ($houseHold === null) ? 404 : 200;
+        $status = ($records !== null) ? 200 : 404;
 
         $data = [
             'status' => $status,
-            'data' => count($records) > 0 ? $records : null
+            'data' => $records
         ];
 
         return $response->withJson($data)->withStatus($data['status']);

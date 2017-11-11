@@ -15,10 +15,17 @@ class IntakeGetAction
         $route = $request->getAttribute('route');
         $id = $route->getArgument('id') ?? 0;
 
+        $householdId = $request->getQueryParam('household_id') ?? 0;
+
         if ($id > 0) {
             $intake = Intake::find($id);
         } else {
-            $intake = Intake::all();
+            $householdId = (int)$householdId;
+            if ($householdId > 0) {
+                $intake = Intake::where('HouseholdId', '=', $householdId)->get();
+            } else {
+                $intake = Intake::all();
+            }
         }
 
         $status = ($intake === null) ? 404 : 200;
